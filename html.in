@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Responsive Image Compression Tool</title>
+  <meta name="description" content="Free online responsive image compressor. Compress images without losing quality. Select your desired compression level.">
+  <meta name="keywords" content="image compression, online image optimizer, compress jpeg png, responsive image tool">
+  <meta name="author" content="Your Name">
+
+  <!-- Styles -->
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background-color: #f2f2f2;
+      padding: 20px;
+    }
+    header {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+    main {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    .uploader, .controls, .output, .ads {
+      width: 100%;
+      max-width: 600px;
+      margin-bottom: 20px;
+      background: white;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+    .output img {
+      max-width: 100%;
+      height: auto;
+      margin-top: 10px;
+    }
+    input[type="range"] {
+      width: 100%;
+    }
+    .ads {
+      text-align: center;
+      min-height: 90px;
+    }
+    @media (max-width: 600px) {
+      .uploader, .controls, .output, .ads {
+        padding: 15px;
+      }
+    }
+  </style>
+
+  <!-- Google AdSense Placeholder -->
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js" crossorigin="anonymous"></script>
+  <script>
+    (adsbygoogle = window.adsbygoogle || []).push({});
+  </script>
+</head>
+
+<body>
+  <header>
+    <h1>Responsive Image Compression Tool</h1>
+    <p>Select your image, choose a compression level, and download the optimized version.</p>
+  </header>
+
+  <main>
+    <!-- Ad Top -->
+    <div class="ads">
+      <!-- Replace ca-pub-XXXX with your AdSense publisher ID -->
+      <ins class="adsbygoogle"
+        style="display:block"
+        data-ad-client="ca-pub-XXXX"
+        data-ad-slot="1234567890"
+        data-ad-format="auto"
+        data-full-width-responsive="true"></ins>
+    </div>
+
+    <!-- Image Upload -->
+    <section class="uploader">
+      <label for="imageInput">Upload Image:</label>
+      <input type="file" id="imageInput" accept="image/*" />
+    </section>
+
+    <!-- Compression Level -->
+    <section class="controls">
+      <label for="qualityRange">Compression Quality: <span id="qualityLabel">80%</span></label>
+      <input type="range" id="qualityRange" min="10" max="100" value="80" />
+      <button id="compressBtn">Compress Image</button>
+    </section>
+
+    <!-- Output -->
+    <section class="output" id="outputSection" style="display: none;">
+      <p>Compressed Image:</p>
+      <img id="compressedImg" alt="Compressed preview" />
+      <a id="downloadLink" download="compressed.jpg">Download Image</a>
+    </section>
+
+    <!-- Ad Bottom -->
+    <div class="ads">
+      <ins class="adsbygoogle"
+        style="display:block"
+        data-ad-client="ca-pub-XXXX"
+        data-ad-slot="1234567890"
+        data-ad-format="auto"
+        data-full-width-responsive="true"></ins>
+    </div>
+  </main>
+
+  <!-- JavaScript -->
+  <script>
+    const imageInput = document.getElementById("imageInput");
+    const qualityRange = document.getElementById("qualityRange");
+    const qualityLabel = document.getElementById("qualityLabel");
+    const compressBtn = document.getElementById("compressBtn");
+    const outputSection = document.getElementById("outputSection");
+    const compressedImg = document.getElementById("compressedImg");
+    const downloadLink = document.getElementById("downloadLink");
+
+    let originalImage = null;
+
+    qualityRange.addEventListener("input", () => {
+      qualityLabel.textContent = `${qualityRange.value}%`;
+    });
+
+    imageInput.addEventListener("change", (event) => {
+      const file = event.target.files[0];
+      if (file && file.type.startsWith("image/")) {
+        const reader = new FileReader();
+        reader.onload = function (e) {
+          originalImage = new Image();
+          originalImage.src = e.target.result;
+        };
+        reader.readAsDataURL(file);
+      }
+    });
+
+    compressBtn.addEventListener("click", () => {
+      if (!originalImage) {
+        alert("Please upload an image first.");
+        return;
+      }
+
+      const canvas = document.createElement("canvas");
+      const ctx = canvas.getContext("2d");
+      canvas.width = originalImage.width;
+      canvas.height = originalImage.height;
+      ctx.drawImage(originalImage, 0, 0);
+
+      const quality = parseInt(qualityRange.value) / 100;
+      const compressedData = canvas.toDataURL("image/jpeg", quality);
+
+      compressedImg.src = compressedData;
+      downloadLink.href = compressedData;
+      outputSection.style.display = "block";
+    });
+  </script>
+</body>
+</html>
